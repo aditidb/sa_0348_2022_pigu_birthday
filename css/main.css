@@ -10,6 +10,10 @@
   --main-bg-color-text: rgb(196, 177, 177);
 }
 
+.darkvoilet {
+  background-color: var(--main-bg-color);
+}
+
 .thin_before_logo {
   background-color: var(--main-bg-color-light);
   height: 2vh;
@@ -30,7 +34,6 @@
   border: 2px solid white;
   /* box-shadow: 2px 3px 4px red; */
 }
-
 
 .logo img {
   height: inherit;
