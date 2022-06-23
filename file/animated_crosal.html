@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../img/sa logo/cm3.png">
+  <title>Gallery</title>
+  <style>
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: palegoldenrod;
+    }
+
+    .gallery-container {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .gallery {
+      position: absolute;
+      top: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 300px;
+      perspective: 800px;
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      transform: translateY(-50%);
+    }
+
+    .frame {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+      border-radius: 4px;
+      position: relative;
+      height: 100%;
+      width: 200px;
+      background: white;
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      cursor: pointer;
+      overflow: hidden;
+      background: radial-gradient(#cfaf7f, #6a4a0f);
+    }
+
+    .frame .image {
+      display: block;
+      position: relative;
+      height: auto;
+      width: 90%;
+      pointer-events: none;
+    }
+
+    .frame .info {
+      color: white;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+      font-family: "Source Sans Pro", serif;
+      font-size: 1.2em;
+    }
+
+    .back {
+      border: 2px solid black;
+      position: absolute;
+      top: 0;
+      left: 100vh;
+      margin-top: 25px;
+      padding: 15px 25px;
+      border-radius: 100%;
+      cursor: pointer;
+      color: rgb(126, 62, 147);
+      
+    }
+    
+    .back:hover {
+      background-color: rgb(177, 177, 39) !important;
+    }
+    
+    .contain {
+      margin-top: 75px;
+    }
+    .ad img{
+       color: rgb(126, 62, 147) !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="back" id="back">
+    <!-- <i class="fa fa-birthday-cake fa-lg ad"></i> -->
+    <img src="../img/sa logo/cake-candles-solid.jpg" alt="" class="ad" height="25px" >
+  </div>
+  <div class="contain">
+
+    <div class="gallery-container" id="back">
+      <div class="gallery" id="back">
+        <div class="frame" id="back"><img class="image" id="back" src="../img/crakers/home_salvar.jpg" />
+          <div class="info">Kurta</div>
+        </div>
+        <div class="frame"><img class="image" src="../img/crakers/queen.jpg" />
+          <div class="info">My princess</div>
+        </div>
+        <div class="frame"><img class="image" src="../img/crakers/pigu.jpg" />
+          <div class="info">Pigu</div>
+        </div>
+        <div class="frame"><img class="image" src="../img/crakers/home.jpg" />
+          <div class="info">Home</div>
+        </div>
+        <div class="frame"><img class="image" src="../img/crakers/infinity.jpg" />
+          <div class="info">Khadakvas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    let open_landing_page = document.getElementById("back");
+
+    open_landing_page.addEventListener("click", () => {
+      window.open("index.html", "_self");
+    });
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => document.querySelectorAll(selector);
+
+    function lerp(n1, n2, speed) {
+      return (1 - speed) * n1 + speed * n2;
+    }
+
+    function angle(from, to) {
+      return Math.atan2(
+        to[1] - from[1],
+        to[0] - from[0]);
+
+    }
+
+    function distance(from, to) {
+      return Math.sqrt(
+        Math.pow(to[0] - from[0], 2),
+        Math.pow(to[1] - from[1], 2));
+
+    }
+
+    function distNorm(from, to, xMax, yMax) {
+      return Math.sqrt(
+        Math.pow((to[0] - from[0]) / xMax, 2),
+        Math.pow((to[1] - from[1]) / yMax, 2));
+
+    }
+
+    Array.prototype.lerp = function (target, speed) {
+      this.forEach((n, i) => this[i] = lerp(n, target[i], speed));
+    };
+
+    class Frame {
+      constructor(node) {
+        this.node = node;
+        this.scale = 1;
+        this.maxScale = 1.25;
+        this.rotation = [0, 0, 0];
+        this.translation = [0, 0, 0];
+        this.center = [0, 0];
+        this.target = [
+          0.5 * window.innerWidth,
+          0.5 * window.innerHeight];
+
+        this.padding = [
+          0.5 * this.node.clientWidth,
+          0.5 * this.node.clientHeight];
+
+        this.focus = false;
+        this.mouseover = false;
+        this.distance = 0;
+        this.node.addEventListener('mousemove', this.hover.bind(this));
+        this.node.addEventListener('mouseleave', this.hover.bind(this));
+        this.setCenter();
+      }
+      setCenter() {
+        let rect = this.node.getBoundingClientRect();
+        this.center[0] = rect.left + this.padding[0];
+        this.center[1] = rect.top + this.padding[1];
+        return this;
+      }
+      setTarget(target) {
+        this.target[0] = target[0];
+        this.target[1] = target[1];
+        return this;
+      }
+      setDistance() {
+        this.distNorm = distNorm(this.center, this.target, window.innerWidth, 0.5 * window.innerHeight);
+        return this;
+      }
+      translate() {
+        this.translation.lerp([
+          0,
+          0,
+          this.mouseover ? 300 : 200 - this.distNorm * 400],
+          0.15);
+        return this;
+      }
+      rotate() {
+        let theta = angle(this.center, this.target);
+        this.rotation.lerp([
+          Math.sin(-theta) * 60 * this.distNorm,
+          Math.cos(theta) * 90 * this.distNorm],
+          0.15);
+        return this;
+      }
+      update() {
+        this.node.style.transform = `
+			translate3d(${this.translation[0]}px,${this.translation[1]}px,${this.translation[2]}px) 
+			rotateX(${this.rotation[0]}deg) rotateY(${this.rotation[1]}deg)
+		`;
+      }
+      hover(e) {
+        this.mouseover = e.type === 'mousemove';
+      }
+    }
+
+
+    class Gallery {
+      constructor() {
+        this.container = $('.gallery');
+        this.center = [
+          0.5 * window.innerWidth,
+          0.5 * window.innerHeight];
+
+        this.mouse = this.center.slice(0);
+        this.target = this.mouse.slice(0);
+        this.container.addEventListener('mousemove', this.hover.bind(this));
+        this.container.addEventListener('mouseleave', this.hover.bind(this));
+        window.addEventListener('resize', this.resize.bind(this));
+        this.initFrames();
+        this.update();
+      }
+      initFrames() {
+        this.frames = [];
+        $$('.frame').forEach(node => this.frames.push(new Frame(node)));
+      }
+      resize() {
+        this.center = [
+          0.5 * window.innerWidth,
+          0.5 * window.innerHeight];
+
+        this.frames.forEach(frame => frame.setCenter());
+      }
+      hover(e) {
+        this.mouseover = e.type === 'mousemove';
+        this.target[0] = e.clientX;
+        this.target[1] = e.clientY;
+      }
+      update() {
+        this.mouse.lerp(
+          this.mouseover ? this.target : this.center,
+          0.125);
+
+        this.frames.forEach(frame => {
+          frame.setTarget(this.mouse).
+            setDistance().
+            translate().
+            rotate().
+            update();
+        });
+        this.container.style.perspectiveOrigin = `${this.mouse[0]}px 50%`;
+        window.requestAnimationFrame(this.update.bind(this));
+      }
+    }
+
+
+    const gallery = new Gallery();
+  </script>
+</body>
+
+</html>

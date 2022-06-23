@@ -1,0 +1,71 @@
+* {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:root {
+  /* --main-bg-color: rgb(49 19 19); */
+  --main-bg-color: rgb(86 4 112);
+  --main-bg-color-light: rgb(126, 62, 147);
+  --main-bg-color-text: rgb(196, 177, 177);
+}
+
+.darkVoilet {
+  background-color: var(--main-bg-color);
+}
+
+.lightVoilet {
+  background-color: var(--main-bg-color-light);
+}
+
+.textVoilet {
+  color: var(--main-bg-color-text) !important;
+}
+
+.thin_before_logo {
+  background-color: var(--main-bg-color-light);
+  height: 2vh;
+  width: 100%;
+}
+
+.logo {
+  background-color: var(--main-bg-color);
+  height: 40vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.border_logo {
+  border: 2px solid white;
+  /* box-shadow: 2px 3px 4px red; */
+}
+
+.logo img {
+  height: inherit;
+  width: 40vh;
+  border-radius: 16vh;
+}
+.nav ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+.nav li {
+  margin: 2.65vh 6vh !important;
+}
+.nav li a {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--main-bg-color-text);
+  font-size: 2.4vh;
+  /* font-weight: bold; */
+}
+.nav li a:hover {
+  padding: 2.4vh 0.13vh !important;
+  background-color: var(--main-bg-color-light);
+  color: wheat;
+  border-radius: 3.33vh;
+}

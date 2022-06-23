@@ -1,0 +1,16 @@
+.wish {
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  background-color: aqua !important;
+  margin-bottom: 100px !important;
+  padding: 15px 25px !important;
+  border-radius: 100% !important;
+  cursor: pointer !important;
+  color: rgb(126, 62, 147) !important;
+  z-index: 1 !important;
+}
+
+.wish:hover {
+  background-color: aquamarine !important;
+}
